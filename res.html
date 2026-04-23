@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>dan.archi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #000; --white: #fff; --gray: #888; --lgray: #ddd; --border: 2px solid #000; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      line-height: 1.8;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
+      pointer-events: none; z-index: 9999;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--black); color: var(--white);
+      font-size: 8px; padding: 6px 0;
+      overflow: hidden; white-space: nowrap; border-bottom: var(--border);
+    }
+    .topbar-inner { display: inline-block; animation: marquee 30s linear infinite; }
+    .topbar-inner span { margin: 0 2.5rem; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* HEADER */
+    header { border-bottom: var(--border); display: grid; grid-template-columns: 1fr auto; }
+    .header-left { padding: 2.5rem 3rem; border-right: var(--border); }
+    .site-title { font-size: clamp(2rem, 6vw, 3.8rem); line-height: 1; letter-spacing: -2px; margin-bottom: 0.7rem; }
+    .site-tagline { font-size: 8px; color: var(--gray); }
+    .header-right { display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem 2rem; min-width: 200px; }
+    .header-nav { display: flex; flex-direction: column; gap: 0.65rem; }
+    .header-nav a { font-size: 8px; display: flex; align-items: center; gap: 0.5rem; transition: none; padding: 2px 4px; }
+    .header-nav a::before { content: '▶'; font-size: 6px; }
+    .header-nav a:hover::before { content: '▼'; }
+    .header-nav a:hover { text-decoration: none; background: var(--black); color: var(--white); }
+    .header-status { font-size: 7px; color: var(--gray); line-height: 2.2; }
+    .status-dot { display: inline-block; width: 7px; height: 7px; background: var(--black); border-radius: 50%; margin-right: 5px; animation: blink 1.1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* PIXEL DIVIDERS */
+    .pdiv { font-size: 9px; color: #bbb; text-align: center; padding: 5px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0; background: #fafafa; letter-spacing: 0.15em; }
+
+    /* HERO */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; border-bottom: var(--border); }
+    .hero-text { padding: 4rem 3rem; border-right: var(--border); }
+    .hero-label { font-size: 7px; color: var(--gray); margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #ccc; }
+    .hero-headline { font-size: clamp(1rem, 2.8vw, 1.55rem); line-height: 1.55; margin-bottom: 2.5rem; }
+    .hero-headline em { font-style: normal; background: var(--black); color: var(--white); padding: 0 5px; }
+    .hero-body { font-family:  monospace, monospace; font-size: 1.35rem; color: #333; line-height: 1.6; margin-bottom: 2.5rem; max-width: 440px; }
+    .hero-links { display: flex; flex-direction: column; gap: 0.7rem; }
+    .pixel-btn {
+      display: inline-block; font-family: 'Press Start 2P', monospace; font-size: 8px;
+      padding: 0.75rem 1.2rem; border: var(--border); background: var(--white); color: var(--black);
+      cursor: pointer; width: fit-content; transition: none;
+    }
+    .pixel-btn:hover, .pixel-btn.inv { background: var(--black); color: var(--white); text-decoration: none; }
+    .pixel-btn.inv:hover { background: var(--white); color: var(--black); }
+
+    .hero-photo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 3rem; background: #f7f7f7; }
+    .pixel-frame { outline: 15px solid #ebebeb; border-radius: 250px; width: 425px; height: 425px; background: #ebebeb; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    /* .pixel-frame::before { content: ''; position: absolute; inset: 8px; border: 1px dashed #ccc; pointer-events: none; } */
+    .pixel-frame img { border-radius: 200px; border: 20px solid #000;}
+    .pixel-frame .pf-icon { font-size: 4rem; margin-bottom: 0.5rem; }
+    .pixel-frame .pf-label { font-size: 7px; color: var(--gray); text-align: center; padding: 0 1rem; line-height: 1.8; }
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--black); border: var(--border); width: 100%; }
+    .h-stat { background: var(--white); padding: 0.75rem; text-align: center; }
+    .h-stat .n { font-size: 1.5rem; display: block; line-height: 1; margin-bottom: 4px; }
+    .h-stat .l { font-size: 8px; color: var(--gray); }
+
+    /* SECTIONS */
+    .section { border-bottom: var(--border); }
+    .section-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 3rem; border-bottom: var(--border); background: var(--black); color: var(--white); }
+    .section-header h2 { font-size: 9px; letter-spacing: 0.08em; }
+    .section-header .sn { font-size: 7px; color: #666; }
+    .section-body { padding: 3rem; }
+
+    /* SKILLS TABLE */
+    .skills-table { width: 100%; border-collapse: collapse; }
+    .skills-table tr { border-bottom: 1px solid #e0e0e0; }
+    .skills-table tr:last-child { border-bottom: none; }
+    .skills-table td { padding: 1rem 1rem 1rem 0; vertical-align: top; }
+    .skills-table td:first-child { width: 170px; font-size: 7px; color: var(--gray); padding-right: 2rem; white-space: nowrap; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px;}
+    .chip { font-family: 'Press Start 2P', monospace; font-size: 7px; padding: 5px 8px; border: 1px solid var(--black); background: var(--white); cursor: default; }
+    .chip:hover { background: var(--black); color: var(--white); }
+    .chip.on { background: var(--black); color: var(--white); }
+
+    /* CERTS */
+    .certs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--black); border: var(--border); }
+    .cert-block { background: var(--white); padding: 2rem; }
+    .cert-block .ci { font-size: 2rem; margin-bottom: 1rem; }
+    .cert-block h3 { font-size: 8px; margin-bottom: 0.6rem; line-height: 1.7; }
+    .cert-block .cm { font-family:  monospace, monospace; font-size: 1.1rem; color: var(--gray); line-height: 1.6; }
+
+    /* PROJECTS */
+    .project-row { display: grid; grid-template-columns: 55px 1fr auto; align-items: start; gap: 2rem; padding: 2rem 0; border-bottom: 1px dashed #ccc; }
+    .project-row:last-child { border-bottom: none; }
+    .pn { font-size: 2rem; color: #ddd; line-height: 1; padding-top: 3px; }
+    .pi h3 { font-size: 9px; margin-bottom: 0.4rem; line-height: 1.6; }
+    .pi .pt { font-size: 7px; color: var(--gray); margin-bottom: 0.6rem; }
+    .pi p { font-family:  monospace; font-size: 15px; color: #444; line-height: 1.5; max-width: 580px; }
+    .ptags { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+
+    /* TIMELINE */
+    .tl-row { display: grid; grid-template-columns: 140px 2px 1fr; gap: 0 2.5rem; }
+    .tl-year { font-size: 7px; color: var(--gray); text-align: right; padding-top: 3px; padding-bottom: 2.5rem; line-height: 1.8; }
+    .tl-line { background: var(--black); position: relative; }
+    .tl-line::before { content: '◆'; position: absolute; top: 0; left: 50%; transform: translateX(-50%); font-size: 8px; background: var(--white); line-height: 1; }
+    .tl-content { padding-bottom: 2.5rem; }
+    .tl-content h3 { font-size: 9px; margin-bottom: 0.4rem; line-height: 1.6; }
+    .tl-content .tc { font-size: 7px; color: var(--gray); margin-bottom: 0.6rem; }
+    .tl-content p { font-family:  monospace, monospace; font-size: 1.25rem; color: #555; line-height: 1.5; max-width: 560px; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .about-copy p { font-family:  monospace, monospace; font-size: 1.35rem; color: #333; line-height: 1.65; margin-bottom: 1.2rem; }
+    .about-copy p strong { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--black); }
+    .pull-quote { border: var(--border); padding: 1.5rem; background: var(--black); color: var(--white); margin: 1.5rem 0; box-shadow: 5px 5px 0 #999; }
+    .pull-quote p { font-family:  monospace, monospace !important; font-size: 1.45rem !important; color: var(--white) !important; line-height: 1.5 !important; margin: 0 !important; }
+    .facts-list { display: flex; flex-direction: column; gap: 2px; background: var(--black); border: var(--border); }
+    .fact-item { background: var(--white); display: grid; grid-template-columns: 38px 1fr; gap: 1rem; padding: 1.2rem; align-items: start; }
+    .fact-item .fi { font-size: 1.4rem; line-height: 1; }
+    .fact-item h4 { font-size: 7px; margin-bottom: 4px; line-height: 1.7; }
+    .fact-item p { font-family:  monospace, monospace; font-size: 1.1rem; color: #555; line-height: 1.4; }
+
+    /* FOOTER */
+    footer { background: var(--black); color: var(--white); padding: 2rem 3rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 2rem; }
+    .footer-brand { font-size: 9px; }
+    .footer-links { display: flex; gap: 1.5rem; justify-content: center; }
+    .footer-links a { font-size: 7px; color: #666; }
+    .footer-links a:hover { color: var(--white); text-decoration: none; }
+    .footer-copy { font-size: 7px; color: #444; text-align: right; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      header { grid-template-columns: 1fr; }
+      .header-right { border-top: var(--border); flex-direction: row; justify-content: space-between; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-photo { display: none; }
+      .section-body { padding: 2rem 1.5rem; }
+      .certs-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .project-row { grid-template-columns: 40px 1fr; }
+      .ptags { display: none; }
+      .tl-row { grid-template-columns: 70px 2px 1fr; gap: 0 1.2rem; }
+      footer { grid-template-columns: 1fr; text-align: center; gap: 1rem; }
+      .footer-copy { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR MARQUEE -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <span>✦ DANIEL ARCHIBALD</span><span>✦ FULL-STACK ENGINEER</span><span>✦ AWS CERTIFIED</span><span>✦ CLOUD ARCHITECT</span><span>✦ TECH EDUCATOR</span><span>✦ ORLANDO, FL</span><span>✦ CYBER SEC.</span><span>✦ SELF-TAUGHT</span><span>✦ SERVERLESS</span><span>✦ IDENTITY SYSTEMS</span>
+      <span>✦ DANIEL ARCHIBALD</span><span>✦ FULL-STACK ENGINEER</span><span>✦ AWS CERTIFIED</span><span>✦ CLOUD ARCHITECT</span><span>✦ TECH EDUCATOR</span><span>✦ ORLANDO, FL</span><span>✦ CYBER SEC.</span><span>✦ SELF-TAUGHT</span><span>✦ SERVERLESS</span><span>✦ IDENTITY SYSTEMS</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <div class="site-title">dan.archi</div>
+      <div class="site-tagline">Full-stack Engineer · Cloud Architect · Tech Educator</div>
+    </div>
+    <div class="header-right">
+      <nav class="header-nav">
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="header-status">
+        <div><span class="status-dot"></span><span style="color: #5abb26">Open to opportunities</span></div>
+        <div>Orlando, FL · Remote OK</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="pdiv">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <h1 class="hero-headline">Self-taught.<br><em>AWS Certified.</em><br>5+ years of industry experience.</h1>
+      <p class="hero-body">I build production cloud infrastructure, serverless APIs, and secure identity systems — and I teach what I know. No CS degree. No bootcamp. Just years of shipping real software and explaining it clearly to anyone who'll listen.</p>
+      <div class="hero-links">
+        <a class="pixel-btn inv" href="https://linkedin.com/in/daniel-archibald-4213389b" target="_blank">LinkedIn</a>
+        <a class="pixel-btn inv" href="https://github.com/pagodingo" target="_blank">Github</a>
+        <a class="pixel-btn" href="./Daniel-Archibald-Fullstack-Resume.docx" download> Download Resume (.docx) </a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="pixel-frame">
+       <img src="./headshot.jpeg" style="width: 380px;" alt="">
+        <div class="pf-label"></div>
+      </div>
+      <div class="hero-stats">
+        <div class="h-stat"><span class="n">5+</span><span class="l">yrs exp.</span></div>
+        <div class="h-stat"><span class="n">30%</span><span class="l">↓ support ticket volume</span></div>
+        <div class="h-stat"><span class="n">2x</span><span class="l">certified</span></div>
+        <div class="h-stat"><span class="n">1st</span><span class="l">the <u>go-to</u> person for support in every role</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdiv">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+
+  <!-- SKILLS -->
+  <div class="section" id="skills">
+    <div class="section-header"><h2>// SKILLS &amp; TECH STACK</h2><span class="sn">[01]</span></div>
+    <div class="section-body">
+      <table class="skills-table">
+        <tr>
+          <td>CLOUD &amp;<br>SERVERLESS</td>
+          <td><div class="chips"><span class="chip on">AWS Lambda</span><span class="chip on">API Gateway</span><span class="chip on">S3</span><span class="chip">RDS</span><span class="chip">CloudFront</span><span class="chip">EventBridge</span><span class="chip">CloudWatch</span><span class="chip">IAM</span><span class="chip">GCP</span><span class="chip">Netlify</span></div></td>
+        </tr>
+        <tr>
+          <td>LANGUAGES &amp;<br>FRAMEWORKS</td>
+          <td><div class="chips"><span class="chip on">JavaScript</span><span class="chip on">React</span><span class="chip on">Serverless</span><span class="chip">REST APIs</span><span class="chip">OAuth 2.0</span><span class="chip">SQL</span><span class="chip">NoSQL</span></div></td>
+        </tr>
+        <tr>
+          <td>IDENTITY &amp;<br>SECURITY</td>
+          <td><div class="chips"><span class="chip on">NIST IAL2</span><span class="chip on">Zero Trust</span><span class="chip on">Biometric Verification</span> <span class="chip">OTP / MFA</span><span class="chip">SMS Auth</span><span class="chip">IAM Policies</span><span class="chip">Passwordless</span></div></td>
+        </tr>
+        <tr>
+          <td>DEVOPS &amp;<br>OBSERVABILITY</td>
+          <td><div class="chips"><span class="chip on">Splunk</span><span class="chip on">Datadog</span><span class="chip on">Postman</span><span class="chip">CI/CD</span><span class="chip">Docker</span><span class="chip">Webpack</span><span class="chip">Webhooks</span></div></td>
+        </tr>
+        <tr>
+          <td>EDUCATION &amp;<br>CONTENT</td>
+          <td><div class="chips"><span class="chip on">Live Instruction</span><span class="chip on">Knowledge Bases & LMS</span><span class="chip on">Documentation</span><span class="chip">Webinars</span><span class="chip">Tech Writing</span><span class="chip">Curriculum Design</span></div></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- CERTS -->
+  <div class="section">
+    <div class="section-header"><h2>// CERTIFICATIONS</h2><span class="sn">[02]</span></div>
+    <div class="section-body">
+      <div class="certs-grid">
+        <div class="cert-block">
+          <div class="ci">☁</div>
+          <h3>AWS Certified Solutions<br>Architect — Associate</h3>
+          <div class="cm">Amazon Web Services · SAA-C03<br>Valid: Jul 2023 – Jul 2026</div>
+        </div>
+        <div class="cert-block">
+          <div class="ci">⬡</div>
+          <h3>Pegasystems Certified<br>Solutions Architect</h3>
+          <div class="cm">Pegasystems<br>Issued: Aug 2022 · Does not expire</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdiv">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+
+  <!-- PROJECTS -->
+  <div class="section" id="projects">
+    <div class="section-header"><h2>// FEATURED PROJECTS</h2><span class="sn">[03]</span></div>
+    <div class="section-body">
+
+      <div class="project-row">
+        <div class="pn">01</div>
+        <div class="pi">
+          <div class="pt">IDENTITY · CLOUD</div>
+          <h2>NIST IAL2 Identity Verification System</h2>
+          <p>Fully automated, mobile-operable identity verification covering three assurance levels — phone, SSN, and BioGov document + facial similarity. Built for Fortune 500 enterprise clients.</p>
+        </div>
+        <div class="ptags"><span class="chip">AWS Lambda, Connect, S3</span></div>
+      </div>
+
+      <!-- <div class="project-row">
+        <div class="pn">02</div>
+        <div class="pi">
+          <div class="pt">eCOMMERCE · AUTOMATION</div>
+          <h2>Circuit City Vendor Migration</h2>
+          <p>Led full migration from legacy supply chain to automated fulfillment. Bridged eCommerce platforms with suppliers via private/public APIs, EDI, and FTP at scale.</p>
+        </div>
+        <div class="ptags"><span class="chip">EDI, REST APIs</span></div>
+      </div> -->
+
+      <div class="project-row">
+        <div class="pn">02</div>
+        <div class="pi">
+          <div class="pt">DEVOPS · TOOLING</div>
+          <h2>Postman API Automation Suite</h2>
+          <p>Designed collections to automate API testing and simulate production use cases, accelerating QA cycles and POCs for enterprise-level companies.</p>
+        </div>
+        <div class="ptags"><span class="chip">Postman, Automation</span></div>
+      </div>
+
+      <div class="project-row">
+        <div class="pn">03</div>
+        <div class="pi">
+          <div class="pt">EDUCATION · PUBLIC SPEAKING</div>
+          <h2>Technical Lectures & Webinars</h2>
+          <p><a style="color: #0074f8;" href="https://www.youtube.com/watch?v=DSc6c45sn7A" target="_blank">"From Grocery Aisles to Coding"</a>  and <a style="color: #0074f8;" href="https://drive.google.com/file/d/1P3j9n8rN0AgSAFUrrGiCblNRr9plYtex/view" target="_blank">"How to Deploy a REST API Service with Pegasystems" </a>— live talks for <u><a href="https://www.blackorlandotech.org/" target="_blank">Black Orlando Tech</a></u> and <u><a href="https://www.pega.com/" target="_blank">Pegasystems</a></u> for devs and career-changers.</p>
+        </div>
+        <div class="ptags"><span class="chip">Livestreams</span></div>
+      </div>
+
+      <div class="project-row">
+        <div class="pn">04</div>
+        <div class="pi">
+          <div class="pt">DOCUMENTATION · IMPACT</div>
+          <h2>Technical Docs — 30% Ticket Reduction</h2>
+          <p>Authored customer-facing documentation across 3 consecutive roles: guides, user manuals, and LMS resources.</p>
+        </div>
+        <div class="ptags"><span class="chip">Technial Writing, SaaS Documentation, ReadMe</span></div>
+      </div>
+
+      <div class="project-row">
+        <div class="pn">05</div>
+        <div class="pi">
+          <div class="pt">FREELANCE · FULL-STACK</div>
+          <h2>Production Web Apps (For Business & Freelance)</h2>
+          <p>Shipped production apps across React, Node.js, AWS, GCP — serverless architectures, SQL/NoSQL databases, API design, and UI/UX. Actively exploring LLM + NLP integrations.</p>
+        </div>
+        <div class="ptags"><span class="chip">AWS, GCP, Netlify, (HTML / CSS / JavaScript), Serverless</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pdiv">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+
+  <!-- EXPERIENCE -->
+  <div class="section" id="experience">
+    <div class="section-header"><h2>// EXPERIENCE</h2><span class="sn">[04]</span></div>
+    <div class="section-body">
+
+      <div class="tl-row">
+        <div class="tl-year">2022<br>→ now</div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <h2>Senior Support Engineer</h2>
+          <div class="tc">IDDataWeb · Tysons Corner, VA (Remote)</div>
+          <p>De facto technical resource for engineering, product, and enterprise clients. Built IAL2-compliant identity systems, maintained Lambda microservices, and audited Fortune 500 software implementations.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-year">2022<br>→ now</div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <h2>Public Speaker & Educator</h2>
+          <div class="tc">Black Orlando Tech / Pegasystems · Orlando, FL</div>
+          <p>Delivered live webinars and technical lectures to developer and career-changer audiences. Conversational style focused on real-world applicability.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-year">Jan–May<br>2022</div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <h2>Customer Success / Product Analyst</h2>
+          <div class="tc">Cloud Kitchens · Los Angeles, CA (Remote)</div>
+          <p>Product demos and structured feedback for Boost, an AI/ML promo platform across DoorDash, GrubHub, UberEats. Assessed ML model performance and measured its impact on customer KPIs.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-year">Sep 2020<br>–Dec 2021</div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <h2>Customer Support -> Vendor Support Lead</h2>
+          <div class="tc">FLXPoint · Jacksonville Beach, FL</div>
+          <p>Promoted to Vendor Support Lead. Directed Circuit City vendor migration and authored onboarding documentation adopted across the entire support team.</p>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-year">2019<br>→ now</div>
+        <div class="tl-line"></div>
+        <div class="tl-content">
+          <h2>Full-Stack Software Engineer</h2>
+          <div class="tc">Freelance · Florida</div>
+          <p>Production web apps using React, Node.js, AWS, and GCP. API design, database modeling, serverless architectures, ongoing LLM and NLP exploration.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <div class="section-header"><h2>// ABOUT</h2><span class="sn">[05]</span></div>
+    <div class="section-body">
+      <div class="about-grid">
+        <div class="about-copy">
+          <p>I studied <u>Neuroscience &amp; Behavior</u> at Florida Atlantic University. Then I taught myself everything else — no bootcamp, no CS degree.</p>
+          <div class="pull-quote"><p>"I know where learners get stuck — because I've been stuck there. And I know what helped, because I had to figure it out myself."</p></div>
+          <p>Today I work in <u>cybersecurity and identity infrastructure</u>, building systems that verify who people are at a federal compliance level. I've also spoken publicly with <b>Black Orlando Tech</b>, given technical lectures for <b>Pegasystems</b>, and written docs that genuinely reduced ticket volume by 30%.</p>
+          <p>Interested in <u>self-taught paths</u> in tech, AI/ML meets identity access, and building things that hold up over time.</p>
+          <p>Open to <u>teaching, platform, and support opportunities.</u></p>
+        </div>
+        <div class="facts-list">
+          <div class="fact-item"><div class="fi">🧠</div><div><h3>Studied neuroscience</h3><p>Florida Atlantic University. Understanding how people learn shapes how I teach and build.</p></div></div>
+          <div class="fact-item"><div class="fi">🛠</div><div><h3>100% self-taught in tech</h3><p>No bootcamp, no CS degree. Every skill earned through real projects and iteration.</p></div></div>
+          <div class="fact-item"><div class="fi">📉</div><div><h3>Docs that cut tickets 30%</h3><p>Technical documentation across 3 roles reduced implementation questions significantly.</p></div></div>
+          <div class="fact-item"><div class="fi">🎙</div><div><h3>Public speaker</h3><p>Live demos and webinars for key business executives and new developers.</p></div></div>
+          <div class="fact-item"><div class="fi">🤖</div><div><h3>Exploring LLM integration</h3><p>Actively building with AI/ML and NLP to understand where next-gen apps are heading.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <h3>dan.archi</h3>
+    <h3>
+      <a href="https://linkedin.com/in/daniel-archibald-4213389b" target="_blank">LinkedIn</a> |
+      <a href="https://github.com/pagodingo" target="_blank">Github</a>
+    </h3>
+    <h3>darchi.dev@gmail.com</h3>
+  </footer>
+
+</body>
+</html>
